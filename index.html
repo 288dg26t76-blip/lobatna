@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>قمري ✨</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- خلفية النجوم والهلال -->
+  <div class="stars-container"></div>
+  <div class="moon"></div>
+
+  <div class="game-container">
+
+    <!-- ================= شاشة الإنترو ================= -->
+    <div id="intro-screen" class="screen active">
+      <div class="card">
+        
+        <!-- الخطوة 1 -->
+        <div id="intro-step-1">
+          <h1 class="fade-in">قبل ما نبدأ الرحلة...</h1>
+          <p class="question-text">تحبيني لو لا؟ 💖</p>
+          <div class="buttons-group">
+            <button id="love-yes-btn" class="main-btn">أي أحبك ✨</button>
+            <button id="love-no-btn" class="secondary-btn runaway-btn">لا 😜</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 2 -->
+        <div id="intro-step-2" class="hidden">
+          <h1 class="fade-in">مُتأكدة؟ 😏</h1>
+          <div class="buttons-group">
+            <button id="confirm-yes-btn" class="main-btn">أي متأكدة! 💖</button>
+            <button id="confirm-no-btn" class="secondary-btn runaway-btn">لا مو متأكدة 🙈</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 3 -->
+        <div id="intro-step-3" class="hidden">
+          <h1 class="fade-in">قولي والله! 🤭</h1>
+          <p class="sub-text">ها نسيت أنتِ ملحدة! 🙈 لعد قولي:</p>
+          <div class="buttons-group">
+            <button id="swear-yes-btn" class="main-btn">والطبيعة أحبك 🌿💖</button>
+            <button id="swear-no-btn" class="secondary-btn runaway-btn">ما أقول 😜</button>
+          </div>
+        </div>
+
+        <!-- الرسالة العاطفية الختامية للإنترو -->
+        <div id="intro-final-message" class="hidden">
+          <h2 class="fade-in highlight-text">وآني هم هواي أحبج ومشتاقلج... 💖</h2>
+          <p class="sweet-text">كافي لا تبتعدين أكثر 🥺✨</p>
+          <div class="buttons-group">
+            <button id="start-game-btn" class="main-btn glow">تعالي نبدأ اللعبة ✨</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= المرحلة الأولى ================= -->
+    <div id="stage-1" class="screen">
+      <div class="card">
+        <h1 class="fade-in">مرحلة ذكرياتنا ✨</h1>
+        <p class="question-text">جاهزة حتى نبلش ونسترجع أجمل أوقاتنا؟ 🌙</p>
+        <div class="buttons-group">
+          <button id="stage1-start-btn" class="main-btn">يلا نبلش! 💖</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
