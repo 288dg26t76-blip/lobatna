@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>قمري ✨</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      color: #fff;
+      direction: rtl;
+    }
+
+    .moon {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: transparent;
+      border-radius: 50%;
+      box-shadow: -12px 12px 0 0 #e0e1dd;
+    }
+
+    .game-container {
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .screen {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .screen.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 30px 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    h1, h2 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #e0e1dd;
+    }
+
+    .question-text, .sub-text, .sweet-text {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      color: #e0e1dd;
+    }
+
+    .highlight-text {
+      color: #ffb703;
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+
+    .final-letter {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #e0e1dd;
+      text-align: right;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      border: 1px dashed rgba(255, 183, 3, 0.4);
+    }
+
+    .buttons-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+
+    .row-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .main-btn, .secondary-btn, .opt-btn {
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .main-btn {
+      background-color: #ffb703;
+      color: #0d1b2a;
+      font-weight: bold;
+    }
+
+    .main-btn:hover {
+      transform: scale(1.03);
+      background-color: #ffa200;
+    }
+
+    .secondary-btn {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .opt-btn {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+
+    .opt-btn:hover {
+      background: rgba(255, 183, 3, 0.3);
+      border-color: #ffb703;
+    }
+
+    .feedback-msg {
+      margin-top: 15px;
+      font-size: 1rem;
+      color: #ffb703;
+      min-height: 24px;
+      font-weight: bold;
+    }
+
+    .glow {
+      box-shadow: 0 0 15px #ffb703;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="moon"></div>
+
+  <div class="game-container">
+
+    <!-- ================= 1. شاشة الإنترو ================= -->
+    <div id="intro-screen" class="screen active">
+      <div class="card">
+        
+        <!-- خطوة الإنترو 1 -->
+        <div id="intro-step-1" class="fade-in">
+          <h1>قبل ما نبدأ الرحلة...</h1>
+          <p class="question-text">تحبيني لو لا؟ 💖</p>
+          <div class="row-buttons">
+            <button id="love-yes-btn" class="main-btn">أي أحبك ✨</button>
+            <button id="love-no-btn" class="secondary-btn runaway-btn">لا 😜</button>
+          </div>
+        </div>
+
+        <!-- خطوة الإنترو 2 -->
+        <div id="intro-step-2" class="hidden fade-in">
+          <h1>مُتأكدة؟ 😏</h1>
+          <div class="row-buttons">
+            <button id="confirm-yes-btn" class="main-btn">أي متأكدة! 💖</button>
+            <button id="confirm-no-btn" class="secondary-btn runaway-btn">لا مو متأكدة 🙈</button>
+          </div>
+        </div>
+
+        <!-- خطوة الإنترو 3 -->
+        <div id="intro-step-3" class="hidden fade-in">
+          <h1>قولي والله! 🤭</h1>
+          <p class="sub-text">ها نسيت أنتِ ملحدة! 🙈 لعد قولي:</p>
+          <div class="row-buttons">
+            <button id="swear-yes-btn" class="main-btn">والطبيعة أحبك 🌿💖</button>
+            <button id="swear-no-btn" class="secondary-btn runaway-btn">ما أقول 😜</button>
+          </div>
+        </div>
+
+        <!-- رسالة الإنترو الختامية -->
+        <div id="intro-final-message" class="hidden fade-in">
+          <h2 class="highlight-text">وآني هم هواي أحبج ومشتاقلج... 💖</h2>
+          <p class="sweet-text">كافي لا تبتعدين أكثر 🥺✨</p>
+          <div class="row-buttons">
+            <button id="start-game-btn" class="main-btn glow">تعالي نبدأ اللعبة ✨</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= 2. بداية المرحلة الأولى ================= -->
+    <div id="stage-1" class="screen">
+      <div class="card fade-in">
+        <h1>مرحلة ذكرياتنا ✨</h1>
+        <p class="question-text">جاهزة حتى نبلش ونسترجع أجمل أوقاتنا؟ 🌙</p>
+        <div class="row-buttons">
+          <button id="stage1-start-btn" class="main-btn glow">يلا نبلش المرحلة 1! 💖</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 3. شاشة الأسئلة (عامة للمراحل) ================= -->
+    <div id="quiz-screen" class="screen">
+      <div class="card fade-in">
+        <h1 id="quiz-title">سؤال ✨</h1>
+        <p id="quiz-question" class="question-text">نص السؤال...</p>
+        
+        <div id="quiz-options" class="buttons-group"></div>
+
+        <div id="quiz-feedback" class="feedback-msg"></div>
+
+        <div class="row-buttons" style="margin-top: 15px;">
+          <button id="next-q-btn" class="main-btn hidden">السؤال التالي ➔</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 4. شاشات الانتقال بين المراحل ================= -->
+    <div id="stage1-end-screen" class="screen">
+      <div class="card fade-in">
+        <h1 class="highlight-text">عاشت إيدج، خلصنا المرحلة الأولى! 🎉💖</h1>
+        <p class="sweet-text">هسة دخلنا بالمرحلة الثانية، أسئلتك الخاصة! جاهزة؟ 🔥</p>
+        <div class="row-buttons">
+          <button id="start-stage2-btn" class="main-btn glow">ابدا المرحلة الثانية 😎</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="stage2-end-screen" class="screen">
+      <div class="card fade-in">
+        <h1 class="highlight-text">عفية بكتكوتنا، خلصنا الثانية! 🌟</h1>
+        <p class="sweet-text">وصلنا للمرحلة الثالثة (فراغات الحب والاعترافات السرية)! مستعدة؟ 🤫💖</p>
+        <div class="row-buttons">
+          <button id="start-stage3-btn" class="main-btn glow">ابدا المرحلة الثالثة ✨</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 5. ملاحظة السوار (قبل الرسالة الختامية) ================= -->
+    <div id="bracelet-note-screen" class="screen">
+      <div class="card fade-in">
+        <h2 class="highlight-text">قفـي هنا لحظة! 🛑✨</h2>
+        <p class="sweet-text" style="line-height: 1.8;">
+          عاشت إيدج، وصلتي هنا بكل برائعة... بس قبل ما تكملين، عندي طلب صغير:
+          <br><br>
+          <b style="color: #ffb703; font-size: 1.2rem;">شوفي السوار اللي بإيدج وهسة بوسيّه! 🥺💖</b>
+          <br><br>
+          لان الرسالة الجاية.. صورتج كبالي، والسوار بإيدي، وقاعد أسوي لج "أحبج" بكل تفاصيلها. 🙈✨
+        </p>
+        <div class="row-buttons">
+          <button id="finish-bracelet-btn" class="main-btn glow">تم البوسة.. يلا نكمل! 🥰🚀</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 6. نهاية اللعبة (الرسالة الختامية الرومانسية) ================= -->
+    <div id="final-end-screen" class="screen">
+      <div class="card fade-in">
+        <h1 class="highlight-text">إلى من ملكت روحي وقلبي... 🌙💖</h1>
+        <div class="final-letter">
+          يا بعد روحي، تدري إني كد ما مشتاقلج أحس الدنيا فارغة من دونج؟ عتبان عليج لأن مو يمي وهلگد متعبني هالبعد وماخذني الشوق لكل تفصيلة بيج. 
+          <br><br>
+          يا <b>قمري</b> الباهي، و<b>أميرة قلبي</b>، و<b>شيطانتي الصغيرة</b> التي لا تقهر، و<b>أميرتي المعضلة</b> التي أستند عليها بكل قوتي... أنتِ مو بس حبيبتي، أنتِ عافيتي ودنيتي كلها. 
+          <br><br>
+          أتمنى تخلص هالمسافات وأبقى أباوع بعيونج لحد ما يغفه الشوگ بقلبي. أحبج قد الدنيا وما بيها! ✨🥺
+        </div>
+        <p class="sweet-text">دمتِ لي عمراً لا ينتهي 💖👑</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // عناصر الإنترو
+      const step1 = document.getElementById('intro-step-1');
+      const step2 = document.getElementById('intro-step-2');
+      const step3 = document.getElementById('intro-step-3');
+      const finalMessage = document.getElementById('intro-final-message');
+
+      const loveYesBtn = document.getElementById('love-yes-btn');
+      const confirmYesBtn = document.getElementById('confirm-yes-btn');
+      const swearYesBtn = document.getElementById('swear-yes-btn');
+      const startGameBtn = document.getElementById('start-game-btn');
+
+      const runawayButtons = document.querySelectorAll('.runaway-btn');
+
+      runawayButtons.forEach(btn => {
+        let attempts = 0;
+
+        const handleEscape = (e) => {
+          attempts++;
+          if (attempts >= 2) {
+            btn.style.display = 'none';
+          } else {
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 30);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 30);
+            btn.style.position = 'fixed';
+            btn.style.left = `${Math.max(10, x)}px`;
+            btn.style.top = `${Math.max(10, y)}px`;
+          }
+        };
+
+        btn.addEventListener('mouseover', handleEscape);
+        btn.addEventListener('touchstart', handleEscape);
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          handleEscape(e);
+        });
+      });
+
+      loveYesBtn.addEventListener('click', () => {
+        step1.classList.add('hidden');
+        step2.classList.remove('hidden');
+      });
+
+      confirmYesBtn.addEventListener('click', () => {
+        step2.classList.add('hidden');
+        step3.classList.remove('hidden');
+      });
+
+      swearYesBtn.addEventListener('click', () => {
+        step3.classList.add('hidden');
+        finalMessage.classList.remove('hidden');
+      });
+
+      startGameBtn.addEventListener('click', () => {
+        document.getElementById('intro-screen').classList.remove('active');
+        document.getElementById('stage-1').classList.add('active');
+      });
+
+      // ================= هيكلية المراحل والأسئلة (3 مراحل) =================
+      const stages = [
+        // --- المرحلة الأولى ---
+        [
+          {
+            title: "المرحلة 1 - السؤال الأول ✨",
+            q: "شنو كانت أغنية تعارفنا؟ 🎵",
+            options: [
+              "بلقيس - يوي يوي",
+              "أم كلثوم - أنت عمري",
+              "حاتم العراقي - واحد يحب واحد",
+              "جورج وسوف - خلف القمر",
+              "جورج الراسي - قلبي مات"
+            ],
+            correct: [0],
+            replies: {
+              0: "عاشت إيدج! طبعاً ما تنسين أغنية تعارفنا 💖✨",
+              default: "ها حليتيه جنج بسيط! صدك جذب هاي ما دبرتيها؟ 😜😂"
+            }
+          },
+          {
+            title: "المرحلة 1 - السؤال الثاني ✨",
+            q: "شنو أكثر شيء أحبه بيج؟ 💖",
+            options: ["ضحكتج", "عيونج", "اسلوبج", "شعرج", "كل تفصيل بيج"],
+            correct: [4],
+            replies: {
+              4: "عفيه عليكِ! آني أحبج بكل تفاصيلج ✨💖",
+              default: "غلط! آني أحب كل تفصيل بيج 😉"
+            }
+          },
+          {
+            title: "المرحلة 1 - السؤال الثالث ✨",
+            q: "شنو أكثر شيء يخليج تحبيني؟ 🌸",
+            options: ["حبي الج", "عيوني", "ضحكتي", "كل شيء بيه"],
+            correct: [0, 3],
+            replies: {
+              0: "فديتك! حبي الج يطغى على كل شيء 💖",
+              3: "وأني أحب كل شيء بيكِ وياي ✨💖",
+              default: "حاولي بعد مرة! 😉"
+            }
+          },
+          {
+            title: "المرحلة 1 - السؤال الرابع ✨",
+            q: "آني شنو اسمي؟ 😏",
+            options: ["عبودي", "إبراهيم", "آدم", "محمد", "فاضل"],
+            correct: [4],
+            replies: {
+              0: "صارت مرة لا تعيديها تره تصير زعل! 😤",
+              1: "ايع شيلي شنو هاللعبان نفس! 🤢",
+              2: "خيولي كلش اضوج منه شيلي من الفلورز! 🙄",
+              3: "ما ادري ليش مبقيته اصلاً؟ 🤔",
+              4: "عفيه عرفتي كتكوتج! 🐣💖"
+            }
+          },
+          {
+            title: "المرحلة 1 - السؤال الخامس ✨",
+            q: "تدرين هذا البعد شنو ديسوي بيه؟ 🥺",
+            options: [
+              "يأذيني",
+              "يخليني اطب ب اكتئاب",
+              "ينعل والديه",
+              "يشكني نصين",
+              "يسوي بيه ذولي كلهم"
+            ],
+            correct: [4],
+            replies: {
+              4: "إي والله يسوي بيه ذولي كلهم... مشتاقلج هواية 🥺💖",
+              default: "مو بس هذا... يسوي بيه ذولي كلهم! 💔"
+            }
+          }
+        ],
+        // --- المرحلة الثانية (أسئلتك الخاصة) ---
+        [
+          {
+            title: "المرحلة 2 - السؤال الأول 🔥",
+            q: "أبوچ عرف بيه وخابرني، شنو اللي متوقعه أسوي؟",
+            options: [
+              "نتفاهم",
+              "أنزع نعالي وألزمه ب إيدي وأشرد",
+              "أكوله معليك بيها هاي مرتي مو بنتك",
+              "أصلاً ما أفتح تلفون"
+            ],
+            correct: [0],
+            replies: {
+              0: "عفية عليج، أكيد نتفاهم بالعقل وبكل احترام! 🤝💖",
+              default: "ههههه لا مو لهلدرجة، نتفاهم طبعاً! 😂"
+            }
+          },
+          {
+            title: "المرحلة 2 - السؤال الثاني 🔥",
+            q: "إذا أمچ خيروها تدوس ببطني لو تحصل 5 مليون دولار، شنو راح تختار؟",
+            options: [
+              "تدوس ببطني",
+              "تدفع من جيبها الخاص 5 مليون دولار وتدوس ببطني",
+              "تأخذ الـ 5 مليون دولار علمود تاجر ناس يخطفوني ويجيبوني يمها وتجفص ببطني",
+              "تعوفني لأن تحبني؟"
+            ],
+            correct: [3],
+            replies: {
+              3: "طبعاً تعوفني لأن تحبني (أو يمكن تاخذ الفلوس وتجفص هم ههههه)! 💸😂",
+              default: "لا وين، أكيد تحبني وتعوفني! 🤭💖"
+            }
+          },
+          {
+            title: "المرحلة 2 - السؤال الثالث 🔥",
+            q: "متوقعة بيوم من الأيام راح أمل منج؟",
+            options: [
+              "لا ما تمل",
+              "لا ما تمل و تزيد",
+              "لا ما تمل و تزيد و تتحول شرك بالله و عباده عيون زهراء الحلتيته"
+            ],
+            correct: [2],
+            replies: {
+              2: "صحيح جداً! عبادة عيون زهراء الحلتيته فرض عين ولا مساومة فيها! 😍✨💖",
+              default: "أبد ما أمل منج، وعيون زهراء هيه العشيق الأبدي! 🥰"
+            }
+          }
+        ],
+        // --- المرحلة الثالثة (فراغات الحب والاعترافات السرية) ---
+        [
+          {
+            title: "المرحلة 3 - الفراغ الأول 💭",
+            q: "املئي الفراغ المناسب:\n\n'الدنيا كلها فداء لـ ......... واحد من رموش عيونج'",
+            options: [
+              "شعر",
+              "رمش",
+              "خطوة",
+              "نظرة"
+            ],
+            correct: [1],
+            replies: {
+              1: "عفية عليج! الدنيا كلها فداء لرمش واحد من رموش عيونج ✨💖",
+              default: "خطأ! ركزي زين يا عمري 😉"
+            }
+          },
+          {
+            title: "المرحلة 3 - الفراغ الثاني 📜",
+            q: "املئي الفراغ المناسب:\n\n'اول قصيدة كتبتها الج جانت ب عنوان .........'",
+            options: [
+              "قمري",
+              "حبيبتي",
+              "زهراء",
+              "الشيطونة"
+            ],
+            correct: [2],
+            replies: {
+              2: "صح! أول قصيدة كتبتها الج جانت بعنوان 'زهراء' 📖❤️",
+              default: "لا مو هاي، تذكر زين! 🤭"
+            }
+          },
+          {
+            title: "المرحلة 3 - الاعتراف الأخير 🤫",
+            q: "معلومة موجهة لجهالنا بالمستقبل:\n'يا جهالنا، أمكم طبت .........' 😂",
+            options: [
+              "تبجي ببرود",
+              "تزحفلي",
+              "تتمشى بكل غرور",
+              "تركض وراي بالنعال"
+            ],
+            correct: [1],
+            replies: {
+              1: "عفية بالسبع! أمكم طبت تزحفلي وهاي حقيقة تاريخية موثقة للجهال 😂🚁💖",
+              default: "ههههه لا مو هاي، تذكري الحقيقة التاريخية العد عدنا! 💀"
+            }
+          }
+        ]
+      ];
+
+      let currentStage = 0;
+      let currentQ = 0;
+
+      const stage1StartBtn = document.getElementById('stage1-start-btn');
+      const quizScreen = document.getElementById('quiz-screen');
+      const stage1Screen = document.getElementById('stage-1');
+      const quizTitle = document.getElementById('quiz-title');
+      const quizQuestion = document.getElementById('quiz-question');
+      const quizOptions = document.getElementById('quiz-options');
+      const quizFeedback = document.getElementById('quiz-feedback');
+      const nextQBtn = document.getElementById('next-q-btn');
+      
+      const stage1EndScreen = document.getElementById('stage1-end-screen');
+      const startStage2Btn = document.getElementById('start-stage2-btn');
+      
+      const stage2EndScreen = document.getElementById('stage2-end-screen');
+      const startStage3Btn = document.getElementById('start-stage3-btn');
+
+      const braceletNoteScreen = document.getElementById('bracelet-note-screen');
+      const finishBraceletBtn = document.getElementById('finish-bracelet-btn');
+      
+      const finalEndScreen = document.getElementById('final-end-screen');
+
+      stage1StartBtn.addEventListener('click', () => {
+        stage1Screen.classList.remove('active');
+        quizScreen.classList.add('active');
+        loadQuestion();
+      });
+
+      startStage2Btn.addEventListener('click', () => {
+        stage1EndScreen.classList.remove('active');
+        quizScreen.classList.add('active');
+        currentStage = 1;
+        currentQ = 0;
+        loadQuestion();
+      });
+
+      startStage3Btn.addEventListener('click', () => {
+        stage2EndScreen.classList.remove('active');
+        quizScreen.classList.add('active');
+        currentStage = 2;
+        currentQ = 0;
+        loadQuestion();
+      });
+
+      // زر الانتقال من ملاحظة السوار للرسالة الختامية الأخيرة
+      finishBraceletBtn.addEventListener('click', () => {
+        braceletNoteScreen.classList.remove('active');
+        finalEndScreen.classList.add('active');
+      });
+
+      function loadQuestion() {
+        const qData = stages[currentStage][currentQ];
+        quizTitle.textContent = qData.title;
+        quizQuestion.innerHTML = qData.q.replace(/\n/g, '<br>');
+        quizFeedback.textContent = "";
+        nextQBtn.classList.add('hidden');
+        quizOptions.innerHTML = "";
+
+        qData.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = "opt-btn";
+          btn.textContent = opt;
+          btn.addEventListener('click', () => checkAnswer(idx, qData));
+          quizOptions.appendChild(btn);
+        });
+      }
+
+      function checkAnswer(selectedIdx, qData) {
+        if (qData.replies[selectedIdx]) {
+          quizFeedback.textContent = qData.replies[selectedIdx];
+        } else {
+          quizFeedback.textContent = qData.replies.default || "عاشقة ذكية! كملي 💖";
+        }
+
+        if (qData.correct.includes(selectedIdx)) {
+          nextQBtn.classList.remove('hidden');
+          const allOptBtns = quizOptions.querySelectorAll('.opt-btn');
+          allOptBtns.forEach(btn => btn.disabled = true);
+        }
+      }
+
+      nextQBtn.addEventListener('click', () => {
+        currentQ++;
+        if (currentQ < stages[currentStage].length) {
+          loadQuestion();
+        } else {
+          quizScreen.classList.remove('active');
+          if (currentStage === 0) {
+            stage1EndScreen.classList.add('active');
+          } else if (currentStage === 1) {
+            stage2EndScreen.classList.add('active');
+          } else {
+            // بعد انتهاء المرحلة الثالثة، نعرض ملاحظة السوار أولاً بدلاً من الرسالة النهائية مباشرة
+            braceletNoteScreen.classList.add('active');
+          }
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>
