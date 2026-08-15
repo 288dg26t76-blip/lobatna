@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>قمري ✨</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      color: #fff;
+      direction: rtl;
+    }
+
+    .moon {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: transparent;
+      border-radius: 50%;
+      box-shadow: -12px 12px 0 0 #e0e1dd;
+    }
+
+    .game-container {
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .screen {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .screen.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 30px 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #e0e1dd;
+    }
+
+    .question-text, .sub-text, .sweet-text {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      color: #e0e1dd;
+    }
+
+    .highlight-text {
+      color: #ffb703;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .sweet-text {
+      font-size: 1.2rem;
+      color: #ffb703;
+    }
+
+    .buttons-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    .row-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .main-btn, .secondary-btn, .opt-btn {
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .main-btn {
+      background-color: #ffb703;
+      color: #0d1b2a;
+      font-weight: bold;
+    }
+
+    .main-btn:hover {
+      transform: scale(1.03);
+      background-color: #ffa200;
+    }
+
+    .secondary-btn {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .opt-btn {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+
+    .opt-btn:hover {
+      background: rgba(255, 183, 3, 0.3);
+      border-color: #ffb703;
+    }
+
+    .feedback-msg {
+      margin-top: 15px;
+      font-size: 1rem;
+      color: #ffb703;
+      min-height: 24px;
+    }
+
+    .glow {
+      box-shadow: 0 0 15px #ffb703;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="moon"></div>
+
+  <div class="game-container">
+
+    <!-- ================= شاشة الإنترو ================= -->
+    <div id="intro-screen" class="screen active">
+      <div class="card">
+        
+        <!-- الخطوة 1 -->
+        <div id="intro-step-1" class="fade-in">
+          <h1>قبل ما نبدأ الرحلة...</h1>
+          <p class="question-text">تحبيني لو لا؟ 💖</p>
+          <div class="row-buttons">
+            <button id="love-yes-btn" class="main-btn">أي أحبك ✨</button>
+            <button id="love-no-btn" class="secondary-btn runaway-btn">لا 😜</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 2 -->
+        <div id="intro-step-2" class="hidden fade-in">
+          <h1>مُتأكدة؟ 😏</h1>
+          <div class="row-buttons">
+            <button id="confirm-yes-btn" class="main-btn">أي متأكدة! 💖</button>
+            <button id="confirm-no-btn" class="secondary-btn runaway-btn">لا مو متأكدة 🙈</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 3 -->
+        <div id="intro-step-3" class="hidden fade-in">
+          <h1>قولي والله! 🤭</h1>
+          <p class="sub-text">ها نسيت أنتِ ملحدة! 🙈 لعد قولي:</p>
+          <div class="row-buttons">
+            <button id="swear-yes-btn" class="main-btn">والطبيعة أحبك 🌿💖</button>
+            <button id="swear-no-btn" class="secondary-btn runaway-btn">ما أقول 😜</button>
+          </div>
+        </div>
+
+        <!-- الرسالة العاطفية الختامية للإنترو -->
+        <div id="intro-final-message" class="hidden fade-in">
+          <h2 class="highlight-text">وآني هم هواي أحبج ومشتاقلج... 💖</h2>
+          <p class="sweet-text">كافي لا تبتعدين أكثر 🥺✨</p>
+          <div class="row-buttons">
+            <button id="start-game-btn" class="main-btn glow">تعالي نبدأ اللعبة ✨</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= المرحلة الأولى: البداية ================= -->
+    <div id="stage-1" class="screen">
+      <div class="card fade-in">
+        <h1>مرحلة ذكرياتنا ✨</h1>
+        <p class="question-text">جاهزة حتى نبلش ونسترجع أجمل أوقاتنا؟ 🌙</p>
+        <div class="row-buttons">
+          <button id="stage1-start-btn" class="main-btn glow">يلا نبلش! 💖</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= أسئلة مرحلة ذكرياتنا ================= -->
+    <div id="quiz-screen" class="screen">
+      <div class="card fade-in">
+        <h1 id="quiz-title">سؤال ذكرياتنا ✨</h1>
+        <p id="quiz-question" class="question-text">نص السؤال هنا...</p>
+        
+        <div id="quiz-options" class="buttons-group"></div>
+
+        <div id="quiz-feedback" class="feedback-msg"></div>
+
+        <div class="row-buttons" style="margin-top: 15px;">
+          <button id="next-q-btn" class="main-btn hidden">السؤال التالي ➔</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= شاشة نهاية المرحلة ================= -->
+    <div id="end-screen" class="screen">
+      <div class="card fade-in">
+        <h1 class="highlight-text">كملنا أول مرحلة! 🎉💖</h1>
+        <p class="sweet-text">كل الذكريات والمشاعر وياج هي أحلى أوقات بحياتي ✨</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // عناصر الإنترو
+      const step1 = document.getElementById('intro-step-1');
+      const step2 = document.getElementById('intro-step-2');
+      const step3 = document.getElementById('intro-step-3');
+      const finalMessage = document.getElementById('intro-final-message');
+
+      const loveYesBtn = document.getElementById('love-yes-btn');
+      const confirmYesBtn = document.getElementById('confirm-yes-btn');
+      const swearYesBtn = document.getElementById('swear-yes-btn');
+      const startGameBtn = document.getElementById('start-game-btn');
+
+      const runawayButtons = document.querySelectorAll('.runaway-btn');
+
+      // نظام الهروب ثم الإخفاء بعد ضغطتين/محاولتين
+      runawayButtons.forEach(btn => {
+        let attempts = 0;
+
+        const handleEscape = (e) => {
+          attempts++;
+          if (attempts >= 2) {
+            // بعد محاولتين يختفي الزر الخطأ بالكامل
+            btn.style.display = 'none';
+          } else {
+            // المحاولة الأولى: يهرب الزر لمكان راندوم
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 30);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 30);
+            btn.style.position = 'fixed';
+            btn.style.left = `${Math.max(10, x)}px`;
+            btn.style.top = `${Math.max(10, y)}px`;
+          }
+        };
+
+        btn.addEventListener('mouseover', handleEscape);
+        btn.addEventListener('touchstart', handleEscape);
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          handleEscape(e);
+        });
+      });
+
+      loveYesBtn.addEventListener('click', () => {
+        step1.classList.add('hidden');
+        step2.classList.remove('hidden');
+      });
+
+      confirmYesBtn.addEventListener('click', () => {
+        step2.classList.add('hidden');
+        step3.classList.remove('hidden');
+      });
+
+      swearYesBtn.addEventListener('click', () => {
+        step3.classList.add('hidden');
+        finalMessage.classList.remove('hidden');
+      });
+
+      startGameBtn.addEventListener('click', () => {
+        document.getElementById('intro-screen').classList.remove('active');
+        document.getElementById('stage-1').classList.add('active');
+      });
+
+      // ================= نظام الأسئلة الخمسة =================
+      const questions = [
+        {
+          title: "الذكرى الأولى ✨",
+          q: "شنو أول أغنية أهديتلج إياها؟ 🎵",
+          options: ["أغنيتنا الخاصة", "أغنية حزينة", "أغنية هادئة"],
+          correct: 0,
+          reply: "أدري بيكِ تذكرين! أحلى أغنية بعالمنا 💖"
+        },
+        {
+          title: "الذكرى الثانية ✨",
+          q: "شنو أكثر لقب أحب أناديج بيه؟ 👑",
+          options: ["قمري 🌙", "روحي", "قلبي"],
+          correct: 0,
+          reply: "أنتِ قمري والدنيا كلها! ✨"
+        },
+        {
+          title: "الذكرى الثالثة ✨",
+          q: "شنو أول وعد قطعناه لبعض؟ 🤝",
+          options: ["نظل مع بعض وما نبتعد 💖", "نسافر سوية", "نشرب قهوة"],
+          correct: 0,
+          reply: "ووعدنا باقي للأبد وما يتغير! ✨"
+        },
+        {
+          title: "الذكرى الرابعة ✨",
+          q: "شنو أكثر شيء يخليني أبتسم بدون شعور؟ 😏",
+          options: ["لما أشوف ضحكتج أو أسمع صوتج 🌸", "المطر", "القهوة"],
+          correct: 0,
+          reply: "ضحكتج وصوتج هما العافية مالتي! 💖"
+        },
+        {
+          title: "الذكرى الخامسة ✨",
+          q: "شنو الشيء المضمون والمؤكد 100%؟ 🪐",
+          options: ["إني أحبج اليوم وبكرة وللأبد 🌿✨", "الطقس مشمس", "الدوام طويل"],
+          correct: 0,
+          reply: "وهذا أحلى وأصدق شيء بكوني! 💖✨"
+        }
+      ];
+
+      let currentQ = 0;
+
+      const stage1StartBtn = document.getElementById('stage1-start-btn');
+      const quizScreen = document.getElementById('quiz-screen');
+      const stage1Screen = document.getElementById('stage-1');
+      const quizTitle = document.getElementById('quiz-title');
+      const quizQuestion = document.getElementById('quiz-question');
+      const quizOptions = document.getElementById('quiz-options');
+      const quizFeedback = document.getElementById('quiz-feedback');
+      const nextQBtn = document.getElementById('next-q-btn');
+      const endScreen = document.getElementById('end-screen');
+
+      stage1StartBtn.addEventListener('click', () => {
+        stage1Screen.classList.remove('active');
+        quizScreen.classList.add('active');
+        loadQuestion();
+      });
+
+      function loadQuestion() {
+        const qData = questions[currentQ];
+        quizTitle.textContent = qData.title;
+        quizQuestion.textContent = qData.q;
+        quizFeedback.textContent = "";
+        nextQBtn.classList.add('hidden');
+        quizOptions.innerHTML = "";
+
+        qData.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = "opt-btn";
+          btn.textContent = opt;
+          btn.addEventListener('click', () => checkAnswer(idx, qData));
+          quizOptions.appendChild(btn);
+        });
+      }
+
+      function checkAnswer(selectedIdx, qData) {
+        quizFeedback.textContent = qData.reply;
+        nextQBtn.classList.remove('hidden');
+
+        const allOptBtns = quizOptions.querySelectorAll('.opt-btn');
+        allOptBtns.forEach(btn => btn.disabled = true);
+      }
+
+      nextQBtn.addEventListener('click', () => {
+        currentQ++;
+        if (currentQ < questions.length) {
+          loadQuestion();
+        } else {
+          quizScreen.classList.remove('active');
+          endScreen.classList.add('active');
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>
