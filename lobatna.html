@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لعبتنا</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at top,#3a1d4d,#120b1d 65%);color:#fff;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{width:min(680px,100%);background:rgba(255,255,255,.08);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.14);border-radius:28px;padding:34px 24px;box-shadow:0 20px 70px #0008;text-align:center}
+.heart{font-size:58px;animation:pulse 1.7s infinite}.small{opacity:.75;font-size:14px}.title{font-size:34px;margin:8px 0 14px}.text{font-size:19px;line-height:1.9;min-height:115px}
+button{border:0;border-radius:18px;padding:13px 24px;margin:6px;font-size:17px;font-weight:700;cursor:pointer;background:#fff;color:#27122f;transition:.2s}button:hover{transform:translateY(-2px)}
+.secondary{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.18)}
+.progress{height:5px;background:#ffffff20;border-radius:99px;margin:18px 0 25px;overflow:hidden}.bar{height:100%;width:20%;background:#fff;border-radius:99px;transition:.4s}
+.hidden{display:none}.final{font-size:22px;line-height:2}.name{font-weight:800}
+</style>
+</head>
+<body>
+<main class="card">
+  <div id="screen">
+    <div class="heart">♥</div>
+    <div class="small">لعبة صغيرة إلها معنى أكبر من حجمها</div>
+    <h1 class="title">عندي شي أريد أكولج ياه...</h1>
+    <p class="text">بس قبل لا أوصله إلج، لازم تمشين وياي كم خطوة. لا تستعجلين بالنهاية.</p>
+    <button onclick="next()">نبدأ؟</button>
+  </div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+</main>
+<script>
+const steps=[
+{t:"السؤال الأول",x:"لو شخص تحبينه صار بعيد عنج شوي بسبب انشغالاته... شنو أول شي يخطر ببالج؟",bs:["أفتقده","أتفهمه","الاثنين سوا"]},
+{t:"خطوة ثانية",x:"وأحياناً مو المشكلة بالانشغال نفسه... المشكلة بالإحساس اللي يتركه غياب الشخص اللي نريده يمنا.",bs:["أكمل"]},
+{t:"قرب أكثر",x:"يمكن ما أريد منج شي كبير. بس أريد أحس إن وجودي بعده إله مكان، وإن البعد ما صار أسهل من القرب.",bs:["أكمل"]},
+{t:"آخر خطوة",x:"إذا وصلج هذا الشعور يوم من الأيام، أتمنى تتذكرين إن ورا هالكلام شخص كل اللي يريده هو قربج واهتمامج.",bs:["أريد أعرف النهاية"]},
+];
+let i=0;
+function next(){
+ if(i<steps.length){
+   const s=steps[i++];
+   document.querySelector('#screen').innerHTML=
+   `<div class="heart">${i===steps.length?'♡':'♥'}</div>
+    <div class="small">${s.t}</div>
+    <h1 class="title">خطوة ${i}</h1>
+    <p class="text">${s.x}</p>
+    <div>${s.bs.map((b,j)=>`<button ${j?'class="secondary"':''} onclick="next()">${b}</button>`).join('')}</div>`;
+   document.querySelector('#bar').style.width=(i/(steps.length+1)*100)+'%';
+ }else{
+   document.querySelector('#screen').innerHTML=
+   `<div class="heart">♥</div>
+    <div class="small">النهاية</div>
+    <h1 class="title">وصلنا ❤️</h1>
+    <p class="final">مو كل عتب يعني زعل<br>
+    ومو كل انتظار يعني ضغط<br>
+    مرات الإنسان بس يريد يحس إن الشخص اللي يحبه بعده قريب منه<br><br>
+    وإذا حسيتِ بيهالشي... فهاي اللعبة كلها كانت مجرد طريقة حتى أكولج:<br>
+    <span class="name">وجودج يعنيلي هواي</span> ❤️</p>
+    <button onclick="location.reload()">أعيد اللعبة</button>`;
+   document.querySelector('#bar').style.width='100%';
+ }
+}
+</script>
+</body>
+</html>
