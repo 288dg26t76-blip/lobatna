@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>قمري ✨</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      color: #fff;
+      direction: rtl;
+    }
+
+    /* خلفية القمر والنجوم */
+    .moon {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: transparent;
+      border-radius: 50%;
+      box-shadow: -12px 12px 0 0 #e0e1dd;
+    }
+
+    .game-container {
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .screen {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .screen.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 30px 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #e0e1dd;
+    }
+
+    .question-text, .sub-text, .sweet-text {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      color: #e0e1dd;
+    }
+
+    .highlight-text {
+      color: #ffb703;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .sweet-text {
+      font-size: 1.2rem;
+      color: #ffb703;
+    }
+
+    .buttons-group {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+      min-height: 50px;
+      flex-wrap: wrap;
+    }
+
+    .main-btn, .secondary-btn {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .main-btn {
+      background-color: #ffb703;
+      color: #0d1b2a;
+      font-weight: bold;
+    }
+
+    .main-btn:hover {
+      transform: scale(1.05);
+      background-color: #ffa200;
+    }
+
+    .secondary-btn {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .glow {
+      box-shadow: 0 0 15px #ffb703;
+    }
+
+    /* كلاس الإخفاء الضروري */
+    .hidden {
+      display: none !important;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- خلفية القمر -->
+  <div class="moon"></div>
+
+  <div class="game-container">
+
+    <!-- ================= شاشة الإنترو ================= -->
+    <div id="intro-screen" class="screen active">
+      <div class="card">
+        
+        <!-- الخطوة 1 -->
+        <div id="intro-step-1" class="fade-in">
+          <h1>قبل ما نبدأ الرحلة...</h1>
+          <p class="question-text">تحبيني لو لا؟ 💖</p>
+          <div class="buttons-group">
+            <button id="love-yes-btn" class="main-btn">أي أحبك ✨</button>
+            <button id="love-no-btn" class="secondary-btn runaway-btn">لا 😜</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 2 -->
+        <div id="intro-step-2" class="hidden fade-in">
+          <h1>مُتأكدة؟ 😏</h1>
+          <div class="buttons-group">
+            <button id="confirm-yes-btn" class="main-btn">أي متأكدة! 💖</button>
+            <button id="confirm-no-btn" class="secondary-btn runaway-btn">لا مو متأكدة 🙈</button>
+          </div>
+        </div>
+
+        <!-- الخطوة 3 -->
+        <div id="intro-step-3" class="hidden fade-in">
+          <h1>قولي والله! 🤭</h1>
+          <p class="sub-text">ها نسيت أنتِ ملحدة! 🙈 لعد قولي:</p>
+          <div class="buttons-group">
+            <button id="swear-yes-btn" class="main-btn">والطبيعة أحبك 🌿💖</button>
+            <button id="swear-no-btn" class="secondary-btn runaway-btn">ما أقول 😜</button>
+          </div>
+        </div>
+
+        <!-- الرسالة العاطفية الختامية للإنترو -->
+        <div id="intro-final-message" class="hidden fade-in">
+          <h2 class="highlight-text">وآني هم هواي أحبج ومشتاقلج... 💖</h2>
+          <p class="sweet-text">كافي لا تبتعدين أكثر 🥺✨</p>
+          <div class="buttons-group">
+            <button id="start-game-btn" class="main-btn glow">تعالي نبدأ اللعبة ✨</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= المرحلة الأولى ================= -->
+    <div id="stage-1" class="screen">
+      <div class="card fade-in">
+        <h1>مرحلة ذكرياتنا ✨</h1>
+        <p class="question-text">جاهزة حتى نبلش ونسترجع أجمل أوقاتنا؟ 🌙</p>
+        <div class="buttons-group">
+          <button id="stage1-start-btn" class="main-btn">يلا نبلش! 💖</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // عناصر الإنترو
+      const step1 = document.getElementById('intro-step-1');
+      const step2 = document.getElementById('intro-step-2');
+      const step3 = document.getElementById('intro-step-3');
+      const finalMessage = document.getElementById('intro-final-message');
+
+      // أزرار القبول
+      const loveYesBtn = document.getElementById('love-yes-btn');
+      const confirmYesBtn = document.getElementById('confirm-yes-btn');
+      const swearYesBtn = document.getElementById('swear-yes-btn');
+      const startGameBtn = document.getElementById('start-game-btn');
+
+      // أزرار الرفض (المشاكسة)
+      const runawayButtons = document.querySelectorAll('.runaway-btn');
+
+      // حركة الهروب لأزرار الرفض
+      runawayButtons.forEach(btn => {
+        btn.addEventListener('mouseover', moveButton);
+        btn.addEventListener('touchstart', moveButton);
+      });
+
+      function moveButton(e) {
+        const btn = e.target;
+        const x = Math.random() * (window.innerWidth - btn.offsetWidth - 20);
+        const y = Math.random() * (window.innerHeight - btn.offsetHeight - 20);
+        btn.style.position = 'fixed';
+        btn.style.left = `${Math.max(10, x)}px`;
+        btn.style.top = `${Math.max(10, y)}px`;
+      }
+
+      // التنقل بين خطوات الإنترو
+      loveYesBtn.addEventListener('click', () => {
+        step1.classList.add('hidden');
+        step2.classList.remove('hidden');
+      });
+
+      confirmYesBtn.addEventListener('click', () => {
+        step2.classList.add('hidden');
+        step3.classList.remove('hidden');
+      });
+
+      swearYesBtn.addEventListener('click', () => {
+        step3.classList.add('hidden');
+        finalMessage.classList.remove('hidden');
+      });
+
+      // الانتقال من الإنترو إلى المرحلة الأولى
+      startGameBtn.addEventListener('click', () => {
+        document.getElementById('intro-screen').classList.remove('active');
+        document.getElementById('stage-1').classList.add('active');
+      });
+
+      // مرحلة ذكرياتنا
+      document.getElementById('stage1-start-btn').addEventListener('click', () => {
+        alert("جاهزين للأسئلة! ✨");
+      });
+
+    });
+  </script>
+</body>
+</html>
